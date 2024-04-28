@@ -1,12 +1,40 @@
 
 import { useState } from "react";
 import Navbar from "./Navbar";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
 
 const UserOnboarding = () => {
 
-  const [dob, setDob] = useState(new Date());
+  const [firstName,setFirstName]=useState('');
+  const [lastName,setLastName]=useState('');
+  const [dob,setDob]=useState('');
+  const [gender,setGender]=useState('');
+  const [contactNumber,setContactNumber]=useState('');
+  const [email,setEmail]=useState('');
+  
+
+  const saveUser= async ()=>{
+    try{
+        const response = await axios.post("http://localhost:3000/api/v1/users/create",{
+            firstName,
+            lastName,
+            dob,
+            gender,
+            contactNumber,
+            email
+        });
+        console.log(response);
+
+        // setName('');
+        // setSalary('');
+        // setAddress('');
+
+    }catch (e){
+        console.log(e)
+    }
+}
+
+
   return (
     <>
     <Navbar /><br />
@@ -19,23 +47,34 @@ const UserOnboarding = () => {
                 <form className="card" style={{ padding: 20}}>
                   <div className='form-group row'>
                     <label htmlFor="details" className="heading">Basic Details </label>
-                    <div className="col-4"><input className="form-control col-4"  placeholder="First Name"  type='text' required/>  </div>
-                    <div className="col-4"><input className="form-control col-4" placeholder="Last Name"  type='text' required/> </div>
-                    <div className="col-4"><input className="form-control col-4" placeholder="Date Of Birth"  type='text' required/> </div> <br />
-                    <div className="col-4"><input className="form-control col-4" placeholder="Gender"  type='text' required/> </div>  
-                    <div className="col-4"><DatePicker  selected={dob} onChange={(date) => setDob(date)} /></div> 
+                    <div className="col-4">
+                      <input className="form-control col-4" onChange={(e)=>{setFirstName(e.target.value)}} placeholder="First Name"  type='text' required/>  
+                    </div>
+                    <div className="col-4">
+                      <input className="form-control col-4" onChange={(e)=>{setLastName(e.target.value)}} placeholder="Last Name"  type='text' required/> 
+                    </div>
+                    <div className="col-4">
+                      <input className="form-control col-4" onChange={(e)=>{setDob(e.target.value)}} placeholder="Date Of Birth"  type='date' required/>
+                    </div> <br />
+                    <div className="col-4">
+                      <input className="form-control col-4" onChange={(e)=>{setGender(e.target.value)}} placeholder="Gender"  type='text' required/>
+                    </div>  
                        
                   </div><br />
 
                   <div className='form-group row'>
                     <label htmlFor="details" className="heading">Contact Details </label>
-                      <div className="col-4"><input className="form-control col-4" placeholder="Mobile Number"  type='text' required/>  </div>
-                      <div className="col-4"><input className="form-control col-4" placeholder="Email"  type='text' required/> </div>      
+                      <div className="col-4">
+                        <input className="form-control col-4" onChange={(e)=>{setContactNumber(e.target.value)}} placeholder="Mobile Number"  type='text' required/>
+                      </div>
+                      <div className="col-4">
+                        <input className="form-control col-4" onChange={(e)=>{setEmail(e.target.value)}} placeholder="Email"  type='text' required/>
+                      </div>      
                   </div><br />
                   </form>
                 <div className="button-style">
                   <button className="btn btn-outline-primary" style={{marginRight:20}} type="button"> Clear </button>
-                  <button className="btn btn-primary" type="button" >Save</button>
+                  <button className="btn btn-primary" type="button" onClick={saveUser}>Save</button>
                 </div>      
                 
               </div>
